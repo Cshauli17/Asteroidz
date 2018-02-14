@@ -8,7 +8,8 @@ public class Collectable extends Actor {
     private int x;
     private int y;
     public Collectable(int x1, int y1){
-        MayflowerImage img = new MayflowerImage("rsrc/Collectable");
+        MayflowerImage img = new MayflowerImage("rsrc/Collectable.png");
+        setImage(img);
         x = x1;
         y = y1;
     }
