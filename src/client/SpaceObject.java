@@ -27,9 +27,12 @@ public class SpaceObject extends Actor{
         direction -=change;
 
     }
+    public int GetDirection(){
+        return direction;
+    }
     @Override
     public void act(){
-        
+
 
     }
 
