@@ -6,21 +6,18 @@ public class SpaceObject extends Actor{
 
     public int speed;
     public int direction;
+    public int x;
+    public int y;
 
     public SpaceObject(){
 
     }
-    public void Vvector(){
+    public int getX(){return x;}
+    public int getY(){return y;}
+    public void changeSpeed(){
 
     }
-
-    public void Vdirection(){
-
-    }
-    public void ChangeSpeed(){
-
-    }
-    public void ChangeDirection(){
+    public void changeDirection(){
         
     }
     @Override
