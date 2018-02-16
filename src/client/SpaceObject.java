@@ -1,39 +1,34 @@
 package client;
 
-import mayflower.Actor;
+import server.TickingActor;
 
-public class SpaceObject extends Actor{
+public abstract class SpaceObject extends TickingActor {
 
     public int speed;
     public int direction;
-    public int locationX;
-    public int locationY;
 
-    public SpaceObject(int x, int y, int intSpeed, int intDirection){
-        locationX = x;
-        locationY = y;
+    public SpaceObject(int intSpeed, int intDirection){
         speed = intSpeed;
         direction = intDirection;
     }
-
-    public int getX(){return locationX;}
-    public int getY(){return locationY;}
 
     public void changeSpeed(int change){
         speed -= change;
     }
 
     public void changeDirection(int change){
-        direction -=change;
-
+        direction -= change;
     }
+
     public int GetDirection(){
         return direction;
     }
+
     @Override
     public void act(){
 
-
     }
 
+    @Override
+    public abstract void tick();
 }

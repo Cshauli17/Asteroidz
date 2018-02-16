@@ -1,6 +1,10 @@
 package server;
 
+import client.ShipActor;
 import client.SpaceObject;
+import mayflower.Mayflower;
+import mayflower.MayflowerHeadless;
+import mayflower.World;
 import mayflower.net.Server;
 
 import java.util.ArrayList;
@@ -10,8 +14,8 @@ import java.util.stream.Collectors;
 
 public class GameServer extends Server {
 
+    public World world;
     public List<Player> players;
-    public List<SpaceObject> objects;
 
     public GameServer() {
         super(21500); //SpaceX is worth 21.5bn
@@ -21,16 +25,20 @@ public class GameServer extends Server {
 
     @Override
     public void process(int i, String s) {
+        String cmd = s.split(" ")[0].toLowerCase();
 
+        switch (cmd) {
+            case "game:start" : {
+                world = new GameWorld();
+                Mayflower.setWorld(world);
+                break;
+            }
+        }
     }
 
     @Override
     public void onJoin(int i) {
         players.add(new Player(i));
-
-        for (Player p : players) {
-
-        }
     }
 
     @Override
@@ -43,7 +51,8 @@ public class GameServer extends Server {
     }
 
     public <T extends SpaceObject> List<T> getObjects(Class<T> clazz) {
-        return objects.stream()
+        if(world == null) return new ArrayList<>();
+        return world.getObjects().stream()
                 .filter(clazz::isInstance)
                 .map(clazz::cast)
                 .collect(Collectors.toList());
@@ -54,7 +63,7 @@ class Player {
 
     public int id;
     public int controls;
-    public SpaceObject ship;
+    public ShipActor ship;
 
     public Player(int id) {
         this.id = id;
