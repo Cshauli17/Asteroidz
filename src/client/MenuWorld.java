@@ -4,6 +4,7 @@ import mayflower.Mayflower;
 import mayflower.World;
 import mayflower.event.EventListener;
 import mayflower.ui.Button;
+import server.AsteroidsServer;
 
 public class MenuWorld extends World implements EventListener {
 
@@ -24,12 +25,13 @@ public class MenuWorld extends World implements EventListener {
         if(s.startsWith("start")) {
             if(s.equals("start false")) //new server
             {
-
+                Main.server = new AsteroidsServer();
+                Main.client = new AsteroidsClient();
             }
             else if(s.equals("start true")) //join server
             {
                 String ip = Mayflower.ask("Enter a server IP to join.");
-                
+                Main.client = new AsteroidsClient(ip);
             }
         }
     }

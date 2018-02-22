@@ -6,8 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mayflower.Mayflower;
+import server.AsteroidsServer;
 
 public class Main extends Mayflower {
+
+    public static AsteroidsServer server;
+    public static AsteroidsClient client;
 
     private Main() {
         super("Asteroidz", 1024, 768);
