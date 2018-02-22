@@ -24,6 +24,8 @@ public abstract class SpaceObject extends TickingActor {
         return direction;
     }
 
+    public int getSpeed(){return speed;}
+
     @Override
     public void act(){
 
