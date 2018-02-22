@@ -1,16 +1,23 @@
 package server;
 
-public class Main {
+import mayflower.Mayflower;
 
-    public static MayflowerServer mayflower;
-    public static GameServer server;
+public class Main extends Mayflower {
+
+    public static GameServer gameServer;
+
+    private Main() {
+        super("Asteroidz Server", 1024, 768);
+    }
 
     public static void main(String[] args) {
+        new Main();
+    }
 
-        System.out.println(" *** Asteroidz Server *** ");
-
-        mayflower = new MayflowerServer();
-        server = mayflower.server;
+    @Override
+    public void init() {
+        System.out.println("Starting server...");
+        gameServer = new GameServer();
     }
 }
 

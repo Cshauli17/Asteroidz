@@ -13,7 +13,7 @@ public class GameWorld extends World {
     //The game starts when this world is initialized.
     public GameWorld() {
 
-        int ships = (int) Math.ceil(Main.server.players.size() / 3f);
+        int ships = (int) Math.ceil(Main.gameServer.players.size() / 3f);
         int shipCounter = 0;
 
         for (int j = 0; j < ships; j++) {
@@ -21,7 +21,7 @@ public class GameWorld extends World {
         }
 
         int k = 0;
-        for (Player p : Main.server.players) {
+        for (Player p : Main.gameServer.players) {
             if(k == 3) {
                 k = 0;
                 shipCounter++;
