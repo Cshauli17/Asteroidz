@@ -4,9 +4,9 @@ import mayflower.*;
 
 public class Laser extends SpaceObject {
 
-    public Laser(int direction) {
+    public Laser(String file, int direction) {
 
-        super(1, direction);
+        super(file, 1, direction);
 
         MayflowerImage img = new MayflowerImage("rsrc/Laser.png");
         setImage(img);

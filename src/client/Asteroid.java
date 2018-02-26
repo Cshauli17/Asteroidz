@@ -7,9 +7,8 @@ import mayflower.MayflowerImage;
 public class Asteroid extends SpaceObject {
 
     public Asteroid(int speed, int direction, String image) {
-        super(speed, direction);
-        MayflowerImage img = new MayflowerImage(image);
-        setImage(img);
+        super(image, speed, direction);
+
     }
 
     public void act() {

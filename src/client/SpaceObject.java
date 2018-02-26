@@ -1,5 +1,6 @@
 package client;
 
+import mayflower.MayflowerImage;
 import server.TickingActor;
 
 public abstract class SpaceObject extends TickingActor {
@@ -7,7 +8,9 @@ public abstract class SpaceObject extends TickingActor {
     public int speed;
     public int direction;
 
-    public SpaceObject(int intSpeed, int intDirection){
+    public SpaceObject(String file, int intSpeed, int intDirection){
+        MayflowerImage img = new MayflowerImage(file);
+        setImage(img);
         speed = intSpeed;
         direction = intDirection;
     }
