@@ -27,10 +27,12 @@ public class MenuWorld extends World implements EventListener {
             {
                 Main.server = new AsteroidsServer();
                 Main.client = new AsteroidsClient();
+                Mayflower.setWorld(new LobbyWorld());
             }
             else if(s.equals("start true")) //join server
             {
                 String ip = Mayflower.ask("Enter a server IP to join.");
+                if(ip == null) return;
                 Main.client = new AsteroidsClient(ip);
             }
         }
