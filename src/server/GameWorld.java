@@ -1,7 +1,9 @@
 package server;
 
+import client.AsteroidsClient;
 import client.ShipActor;
 import mayflower.World;
+import mayflower.*;
 
 public class GameWorld extends World {
 
@@ -12,7 +14,7 @@ public class GameWorld extends World {
         int shipCounter = 0;
 
         for (int j = 0; j < ships; j++) {
-            addObject(new ShipActor(), j * 100 + 1024 / 2, j * 100 + 768 / 2);
+            addObject(new ShipActor("Spaceship.png"), j * 100 + 1024 / 2, j * 100 + 768 / 2);
         }
 
         int k = 0;

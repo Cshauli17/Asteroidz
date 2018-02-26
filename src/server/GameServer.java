@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.parseInt;
+
 public class GameServer extends Server {
 
     public World world;
@@ -25,7 +27,8 @@ public class GameServer extends Server {
 
     @Override
     public void process(int i, String s) {
-        String cmd = s.split(" ")[0].toLowerCase();
+        String[] split = s.split(" ");
+        String cmd = split[0].toLowerCase();
 
         switch (cmd) {
             case "game:start" : {
@@ -33,6 +36,7 @@ public class GameServer extends Server {
                 Mayflower.setWorld(world);
                 break;
             }
+
         }
     }
 

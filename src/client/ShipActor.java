@@ -2,9 +2,9 @@ package client;
 
 public class ShipActor extends SpaceObject {
 
-    public ShipActor() {
-        super(0, 0);
-        setImage("rsrc/SpaceShip.png");
+    public ShipActor(String file) {
+        super(file, 0 , 0);
+
     }
 
     @Override
