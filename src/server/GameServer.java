@@ -32,49 +32,42 @@ public class GameServer extends Server {
     public void process(int i, String s) {
         String[] split = s.split(" ");
         String cmd = split[0].toLowerCase();
-
+        System.out.println("Server processing: " + s);
         switch (cmd) {
             case "start" : {
                 send("start");
                 mayflower._setWorld(new GameWorld());
                 break;
             }
-<<<<<<< HEAD
-
-            case "ship:accelerate":{
-                if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeSpeed(1);
-
-=======
             case "ship:speed":{ //ship:speed [+|-]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
                     getPlayer(i).ship.changeSpeed(split[1].equals("+") ? 1 : -1);
                 break;
->>>>>>> b8f3e3de581b7bb5a1d7cfbab79790496f9a0830
+
             }
             case "ship:turn":{ //ship:turn [L|R]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
                     getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
                 break;
             }
-<<<<<<< HEAD
-            //system:addenergy id
+
+            //system:[addenergy/removeenergy]
             case "system:addenergy":{
-                getPlayer(parseInt(split[1])).system.addEnergy();
+                getPlayer(i).system.addEnergy();
             }
             case "system:removeenergy":{
-                getPlayer(parseInt(split[1])).system.removeEnergy();
+                getPlayer(i).system.removeEnergy();
             }
             case "ship:turnLeft":{
-                if(getPlayer(i).hasControls(Controls.MOVEMENT))
+                if (getPlayer(i).hasControls(Controls.MOVEMENT))
                     getPlayer(i).ship.changeDirection(1);
-=======
+            }
             case "weapon:turn":{
                 if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
                     //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
                 // todo rotate cannon.
                 break;
->>>>>>> b8f3e3de581b7bb5a1d7cfbab79790496f9a0830
+
             }
             case "weapon:fire":{
                 if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
@@ -116,12 +109,12 @@ class Player {
     public int id;
     public int controls;
     public ShipActor ship;
-<<<<<<< HEAD
+
     public Systems system;
-=======
+
     //public CannonActor cannon;
 
->>>>>>> b8f3e3de581b7bb5a1d7cfbab79790496f9a0830
+
     public Player(int id) {
         this.id = id;
     }
