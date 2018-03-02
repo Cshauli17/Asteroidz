@@ -17,7 +17,7 @@ public class ShipActor extends SpaceObject {
 
     @Override
     public void tick() {
-
+        
     }
 
 }
