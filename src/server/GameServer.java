@@ -2,6 +2,7 @@ package server;
 
 import client.ShipActor;
 import client.SpaceObject;
+import client.Systems;
 import mayflower.Keyboard;
 import mayflower.Mayflower;
 import mayflower.MayflowerHeadless;
@@ -38,7 +39,7 @@ public class GameServer extends Server {
                 break;
             }
             // ship:accelerate id
-            case "ship:accelerate":{
+            case "ship:speedup":{
                 // if presses up move player with this id forward
                 getPlayer(parseInt(split[1])).ship.changeSpeed(1);
             }
@@ -46,11 +47,18 @@ public class GameServer extends Server {
             case "ship:slowdown":{
                 getPlayer(parseInt(split[1])).ship.changeSpeed(-1);
             }
-            case "ship:turnLeft":{
+            case "ship:turnleft":{
                 getPlayer(parseInt(split[1])).ship.changeDirection(1);
             }
-            case "ship:turnRight":{
+            case "ship:turnright":{
                 getPlayer(parseInt(split[1])).ship.changeDirection(-1);
+            }
+            //system:addenergy id
+            case "system:addenergy":{
+                getPlayer(parseInt(split[1])).system.addEnergy();
+            }
+            case "system:removeenergy":{
+                getPlayer(parseInt(split[1])).system.removeEnergy();
             }
 
         }
@@ -84,7 +92,7 @@ class Player {
     public int id;
     public int controls;
     public ShipActor ship;
-
+    public Systems system;
     public Player(int id) {
         this.id = id;
     }
