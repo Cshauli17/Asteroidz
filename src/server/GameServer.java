@@ -38,21 +38,27 @@ public class GameServer extends Server {
                 mayflower._setWorld(new GameWorld());
                 break;
             }
-            case "ship:accelerate":{
+            case "ship:speed":{ //ship:speed [+|-]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeSpeed(1);
+                    getPlayer(i).ship.changeSpeed(split[1].equals("+") ? 1 : -1);
+                break;
             }
-            case "ship:slowdown":{
+            case "ship:turn":{ //ship:turn [L|R]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeSpeed(-1);
+                    getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                break;
             }
-            case "ship:turnLeft":{
-                if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeDirection(1);
+            case "weapon:turn":{
+                if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
+                    //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                // todo rotate cannon.
+                break;
             }
-            case "ship:turnRight":{
-                if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeDirection(-1);
+            case "weapon:fire":{
+                if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
+                //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                // todo fire cannon.
+                break;
             }
         }
     }
@@ -87,6 +93,7 @@ class Player {
     public int id;
     public int controls;
     public ShipActor ship;
+    //public CannonActor cannon;
 
     public Player(int id) {
         this.id = id;
