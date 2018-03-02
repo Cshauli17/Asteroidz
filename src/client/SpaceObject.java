@@ -18,7 +18,6 @@ public abstract class SpaceObject extends TickingActor {
 
     public void changeSpeed(int change){
         speed += change;
-        move(speed);
     }
 
     public void changeDirection(int change){
@@ -38,5 +37,7 @@ public abstract class SpaceObject extends TickingActor {
     }
 
     @Override
-    public abstract void tick();
+    public void tick() {
+        move(getSpeed());
+    }
 }

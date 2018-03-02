@@ -2,6 +2,7 @@ package server;
 
 import client.ShipActor;
 import client.SpaceObject;
+import client.Systems;
 import mayflower.Keyboard;
 import mayflower.Mayflower;
 import mayflower.MayflowerHeadless;
@@ -38,21 +39,41 @@ public class GameServer extends Server {
                 mayflower._setWorld(new GameWorld());
                 break;
             }
-            case "ship:accelerate":{
+            case "ship:speed":{ //ship:speed [+|-]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeSpeed(1);
+                    getPlayer(i).ship.changeSpeed(split[1].equals("+") ? 1 : -1);
+                break;
             }
-            case "ship:slowdown":{
+            case "ship:turn":{ //ship:turn [L|R]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeSpeed(-1);
+                    getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                break;
             }
-            case "ship:turnLeft":{
-                if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeDirection(1);
+
+            //WEAPONRY
+            case "weapon:turn":{ //ship:turn [L|R]
+                if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
+                    //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                // todo rotate cannon.
+                break;
             }
-            case "ship:turnRight":{
-                if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeDirection(-1);
+            case "weapon:fire":{ //ship:fire
+                if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
+                //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                // todo fire cannon.
+                break;
+            }
+
+            //ENGINEERING
+            case "engineering:add":{ //engineering:add [movement|weapons]
+                if(getPlayer(i).hasControls(Controls.ENGINEERING)) break;
+                // todo
+                break;
+            }
+            case "engineering:remove":{ //engineering:add [movement|weapons]
+                if(getPlayer(i).hasControls(Controls.ENGINEERING)) break;
+                // todo
+                break;
             }
         }
     }
@@ -87,6 +108,8 @@ class Player {
     public int id;
     public int controls;
     public ShipActor ship;
+    public Systems system;
+    //public CannonActor cannon;
 
     public Player(int id) {
         this.id = id;
