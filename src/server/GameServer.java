@@ -38,22 +38,22 @@ public class GameServer extends Server {
                 mayflower._setWorld(new GameWorld());
                 break;
             }
-            // ship:accelerate id
             case "ship:accelerate":{
-                // if presses up move player with this id forward
-                getPlayer(parseInt(split[1])).ship.changeSpeed(1);
+                if(getPlayer(i).hasControls(Controls.MOVEMENT))
+                    getPlayer(i).ship.changeSpeed(1);
             }
-            //ship:slowdown id
             case "ship:slowdown":{
-                getPlayer(parseInt(split[1])).ship.changeSpeed(-1);
+                if(getPlayer(i).hasControls(Controls.MOVEMENT))
+                    getPlayer(i).ship.changeSpeed(-1);
             }
             case "ship:turnLeft":{
-                getPlayer(parseInt(split[1])).ship.changeDirection(1);
+                if(getPlayer(i).hasControls(Controls.MOVEMENT))
+                    getPlayer(i).ship.changeDirection(1);
             }
             case "ship:turnRight":{
-                getPlayer(parseInt(split[1])).ship.changeDirection(-1);
+                if(getPlayer(i).hasControls(Controls.MOVEMENT))
+                    getPlayer(i).ship.changeDirection(-1);
             }
-
         }
     }
 
