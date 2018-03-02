@@ -1,5 +1,8 @@
 package client;
 
+import mayflower.Keyboard;
+import mayflower.Mayflower;
+
 public class ShipActor extends SpaceObject {
 
     public ShipActor(String file) {

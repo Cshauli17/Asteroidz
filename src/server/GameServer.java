@@ -2,6 +2,7 @@ package server;
 
 import client.ShipActor;
 import client.SpaceObject;
+import client.Systems;
 import mayflower.Keyboard;
 import mayflower.Mayflower;
 import mayflower.MayflowerHeadless;
@@ -107,6 +108,7 @@ class Player {
     public int id;
     public int controls;
     public ShipActor ship;
+    public Systems system;
     //public CannonActor cannon;
 
     public Player(int id) {
