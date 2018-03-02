@@ -43,7 +43,10 @@ public class GameServer extends Server {
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
                     getPlayer(i).ship.changeSpeed(split[1].equals("+") ? 1 : -1);
                 break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 38bf845f485dc600259fb9c752497d14b64b7c50
             }
             case "ship:turn":{ //ship:turn [L|R]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
@@ -51,6 +54,7 @@ public class GameServer extends Server {
                 break;
             }
 
+<<<<<<< HEAD
             //system:[addenergy/removeenergy]
             case "system:addenergy":{
                 getPlayer(i).system.addEnergy();
@@ -63,19 +67,37 @@ public class GameServer extends Server {
                     getPlayer(i).ship.changeDirection(1);
             }
             case "weapon:turn":{
+=======
+            //WEAPONRY
+            case "weapon:turn":{ //ship:turn [L|R]
+>>>>>>> 38bf845f485dc600259fb9c752497d14b64b7c50
                 if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
                     //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
                 // todo rotate cannon.
                 break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 38bf845f485dc600259fb9c752497d14b64b7c50
             }
-            case "weapon:fire":{
+            case "weapon:fire":{ //ship:fire
                 if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
                 //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
                 // todo fire cannon.
                 break;
             }
 
+            //ENGINEERING
+            case "engineering:add":{ //engineering:add [movement|weapons]
+                if(getPlayer(i).hasControls(Controls.ENGINEERING)) break;
+                // todo
+                break;
+            }
+            case "engineering:remove":{ //engineering:add [movement|weapons]
+                if(getPlayer(i).hasControls(Controls.ENGINEERING)) break;
+                // todo
+                break;
+            }
         }
     }
 
@@ -109,12 +131,18 @@ class Player {
     public int id;
     public int controls;
     public ShipActor ship;
+<<<<<<< HEAD
 
     public Systems system;
 
     //public CannonActor cannon;
 
 
+=======
+    public Systems system;
+    //public CannonActor cannon;
+
+>>>>>>> 38bf845f485dc600259fb9c752497d14b64b7c50
     public Player(int id) {
         this.id = id;
     }
