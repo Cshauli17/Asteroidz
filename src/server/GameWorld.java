@@ -18,7 +18,7 @@ public class GameWorld extends World {
         for (int j = 0; j < ships; j++) {
             addObject(new ShipActor("rsrc/Spaceship.png"), j * 100 + 1024 / 2, j * 100 + 768 / 2);
 
-            Main.client.send("ship: " + (j * 100 + 1024 / 2) +" "+(j* 100 + 768 / 2)+" 0 0");
+            AsteroidsServer.gameServer.send("ship: " + (j * 100 + 1024 / 2) +" "+(j* 100 + 768 / 2)+" 0 0");
         }
 
         int k = 0;
