@@ -2,6 +2,7 @@ package server;
 
 import client.ShipActor;
 import client.SpaceObject;
+import mayflower.Keyboard;
 import mayflower.Mayflower;
 import mayflower.MayflowerHeadless;
 import mayflower.World;
@@ -35,6 +36,21 @@ public class GameServer extends Server {
                 world = new GameWorld();
                 Mayflower.setWorld(world);
                 break;
+            }
+            // ship:accelerate id
+            case "ship:accelerate":{
+                // if presses up move player with this id forward
+                getPlayer(parseInt(split[1])).ship.changeSpeed(1);
+            }
+            //ship:slowdown id
+            case "ship:slowdown":{
+                getPlayer(parseInt(split[1])).ship.changeSpeed(-1);
+            }
+            case "ship:turnLeft":{
+                getPlayer(parseInt(split[1])).ship.changeDirection(1);
+            }
+            case "ship:turnRight":{
+                getPlayer(parseInt(split[1])).ship.changeDirection(-1);
             }
 
         }

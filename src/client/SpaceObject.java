@@ -13,17 +13,20 @@ public abstract class SpaceObject extends TickingActor {
         setImage(img);
         speed = intSpeed;
         direction = intDirection;
+
     }
 
     public void changeSpeed(int change){
-        speed -= change;
+        speed += change;
+        move(speed);
     }
 
     public void changeDirection(int change){
-        direction -= change;
+        direction += change;
+        setRotation(direction);
     }
 
-    public int GetDirection(){
+    public int getDirection(){
         return direction;
     }
 

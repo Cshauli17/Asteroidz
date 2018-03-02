@@ -1,12 +1,13 @@
 package client;
 
 import mayflower.Mayflower;
+import mayflower.World;
 import mayflower.net.Client;
 
 import static java.lang.Integer.parseInt;
 
 public class AsteroidsClient extends Client {
-
+    private World wld;
     public AsteroidsClient() {
         this("");
     }
@@ -17,7 +18,8 @@ public class AsteroidsClient extends Client {
     }
 
     public void start() {
-        Mayflower.setWorld(new LocalGameWorld());
+        wld = new LocalGameWorld();
+        Mayflower.setWorld(wld);
         send("start");
     }
 
@@ -25,6 +27,7 @@ public class AsteroidsClient extends Client {
     public void process(String s) {
         String[] split = s.split(" ");
         String cmd = split[0].toLowerCase();
+        System.out.println(s);
         //ship: x y rotation velocity
         switch (cmd) {
             case "ship:": {
@@ -32,7 +35,8 @@ public class AsteroidsClient extends Client {
                 int y = parseInt(split[2]);
                 int rotation = parseInt(split[3]);
                 int velocity = parseInt(split[4]);
-                SpaceObject ship = new PuppetObject("Spaceship.png", velocity, rotation);
+                SpaceObject ship = new PuppetObject("rsrc/Spaceship.png", velocity, rotation);
+                wld.addObject(ship,x,y);
 
             }
             //asteroid: size x y rotation velocity
