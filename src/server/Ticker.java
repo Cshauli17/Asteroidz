@@ -1,17 +1,19 @@
 package server;
 
+import client.Main;
+import mayflower.Mayflower;
 import mayflower.World;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TickingWorld extends World {
+public class Ticker {
 
     private Timer t;
     private long time0, time1;
 
-    public TickingWorld() {
+    public Ticker() {
 
         t = new Timer();
         t.schedule(new TimerTask() {
@@ -46,13 +48,9 @@ public class TickingWorld extends World {
 
     public void tick()
     {
-        new ArrayList<>(getObjects()).forEach(n -> {
-            if (n instanceof TickingActor) ((TickingActor) n).tick();
-        });
-    }
-
-    @Override
-    public void act() {
-
+        if(AsteroidsServer.gameServer.world != null)
+            new ArrayList<>(AsteroidsServer.gameServer.world.getObjects()).forEach(n -> {
+                if (n instanceof TickingActor) ((TickingActor) n).tick();
+            });
     }
 }

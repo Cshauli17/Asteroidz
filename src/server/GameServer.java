@@ -19,13 +19,16 @@ import static java.lang.Integer.parseInt;
 public class GameServer extends Server {
 
     public Mayflower mayflower;
+    public World world;
     public List<Player> players;
+    public Ticker ticker;
 
     public GameServer(Mayflower mayflower) {
         super(21500); //SpaceX is worth 21.5bn
 
+        this.ticker = new Ticker();
         this.mayflower = mayflower;
-        players = new ArrayList<>();
+        this.players = new ArrayList<>();
     }
 
     @Override
@@ -36,7 +39,8 @@ public class GameServer extends Server {
         switch (cmd) {
             case "start" : {
                 send("start");
-                mayflower._setWorld(new GameWorld());
+                this.world = new GameWorld();
+                mayflower._setWorld(world);
                 break;
             }
 
@@ -69,7 +73,7 @@ public class GameServer extends Server {
                 // todo
                 break;
             }
-            
+
             case "engineering:remove":{ //engineering:add [movement|weapons]
                 if(getPlayer(i).hasControls(Controls.ENGINEERING))
                 // todo
@@ -94,13 +98,13 @@ public class GameServer extends Server {
         return players.stream().filter(n -> n.id == i).findFirst().orElse(null);
     }
 
-    //public <T extends SpaceObject> List<T> getObjects(Class<T> clazz) {
-    //    if(Mayflower.getWorld()== null) return new ArrayList<>();
-    //    return world.getObjects().stream()
-    //            .filter(clazz::isInstance)
-    //            .map(clazz::cast)
-    //            .collect(Collectors.toList());
-    //}
+    public <T extends SpaceObject> List<T> getObjects(Class<T> clazz) {
+        if(world == null) return new ArrayList<>();
+        return world.getObjects().stream()
+                .filter(clazz::isInstance)
+                .map(clazz::cast)
+                .collect(Collectors.toList());
+    }
 }
 
 class Player {

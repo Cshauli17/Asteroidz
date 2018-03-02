@@ -25,10 +25,6 @@ public abstract class SpaceObject extends TickingActor {
         setRotation(direction);
     }
 
-    public int getDirection(){
-        return direction;
-    }
-
     public int getSpeed(){return speed;}
 
     @Override
@@ -38,6 +34,7 @@ public abstract class SpaceObject extends TickingActor {
 
     @Override
     public void tick() {
+        System.out.println("sup");
         move(getSpeed());
     }
 }
