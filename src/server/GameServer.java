@@ -52,26 +52,24 @@ public class GameServer extends Server {
 
             //WEAPONRY
             case "weapon:turn":{ //ship:turn [L|R]
-                if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
-                    //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                if(getPlayer(i).hasControls(Controls.WEAPONS))
                 // todo rotate cannon.
                 break;
             }
             case "weapon:fire":{ //ship:fire
-                if(getPlayer(i).hasControls(Controls.WEAPONS)) break;
-                //getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                if(getPlayer(i).hasControls(Controls.WEAPONS))
                 // todo fire cannon.
                 break;
             }
 
             //ENGINEERING
             case "engineering:add":{ //engineering:add [movement|weapons]
-                if(getPlayer(i).hasControls(Controls.ENGINEERING)) break;
+                if(getPlayer(i).hasControls(Controls.ENGINEERING))
                 // todo
                 break;
             }
             case "engineering:remove":{ //engineering:add [movement|weapons]
-                if(getPlayer(i).hasControls(Controls.ENGINEERING)) break;
+                if(getPlayer(i).hasControls(Controls.ENGINEERING))
                 // todo
                 break;
             }
