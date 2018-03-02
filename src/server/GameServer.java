@@ -18,12 +18,13 @@ import static java.lang.Integer.parseInt;
 
 public class GameServer extends Server {
 
-    public World world;
+    public Mayflower mayflower;
     public List<Player> players;
 
-    public GameServer() {
+    public GameServer(Mayflower mayflower) {
         super(21500); //SpaceX is worth 21.5bn
 
+        this.mayflower = mayflower;
         players = new ArrayList<>();
     }
 
@@ -33,9 +34,9 @@ public class GameServer extends Server {
         String cmd = split[0].toLowerCase();
 
         switch (cmd) {
-            case "game:start" : {
-                world = new GameWorld();
-                Mayflower.setWorld(world);
+            case "start" : {
+                send("start");
+                mayflower._setWorld(new GameWorld());
                 break;
             }
             // ship:accelerate id
@@ -67,24 +68,26 @@ public class GameServer extends Server {
     @Override
     public void onJoin(int i) {
         players.add(new Player(i));
+        System.out.println("Player connected " + i);
     }
 
     @Override
     public void onExit(int i) {
         players.remove(getPlayer(i));
+        System.out.println("Player disconnected " + i);
     }
 
     public Player getPlayer(int i) {
         return players.stream().filter(n -> n.id == i).findFirst().orElse(null);
     }
 
-    public <T extends SpaceObject> List<T> getObjects(Class<T> clazz) {
-        if(world == null) return new ArrayList<>();
-        return world.getObjects().stream()
-                .filter(clazz::isInstance)
-                .map(clazz::cast)
-                .collect(Collectors.toList());
-    }
+    //public <T extends SpaceObject> List<T> getObjects(Class<T> clazz) {
+    //    if(Mayflower.getWorld()== null) return new ArrayList<>();
+    //    return world.getObjects().stream()
+    //            .filter(clazz::isInstance)
+    //            .map(clazz::cast)
+    //            .collect(Collectors.toList());
+    //}
 }
 
 class Player {

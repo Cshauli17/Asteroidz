@@ -13,7 +13,7 @@ public class AsteroidsServer extends Mayflower {
     @Override
     public void init() {
         System.out.println("Starting server...");
-        gameServer = new GameServer();
+        gameServer = new GameServer(this);
     }
 }
 
