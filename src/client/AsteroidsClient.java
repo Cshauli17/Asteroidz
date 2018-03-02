@@ -40,7 +40,7 @@ public class AsteroidsClient extends Client {
                 int y = parseInt(split[2]);
                 int rotation = parseInt(split[3]);
                 int velocity = parseInt(split[4]);
-                SpaceObject ship = new PuppetObject("rsrc/Spaceship.png", velocity, rotation);
+                SpaceObject ship = new PuppetObject("rsrc/brady_old.png", velocity, rotation);
                 wld.addObject(ship,x,y);
 
                 break;

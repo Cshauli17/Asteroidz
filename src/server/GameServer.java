@@ -32,42 +32,44 @@ public class GameServer extends Server {
     public void process(int i, String s) {
         String[] split = s.split(" ");
         String cmd = split[0].toLowerCase();
-
+        System.out.println("Server processing: " + s);
         switch (cmd) {
             case "start" : {
                 send("start");
                 mayflower._setWorld(new GameWorld());
                 break;
             }
+
             case "ship:speed":{ //ship:speed [+|-]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
                     getPlayer(i).ship.changeSpeed(split[1].equals("+") ? 1 : -1);
                 break;
             }
+
             case "ship:turn":{ //ship:turn [L|R]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
                     getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
                 break;
             }
 
-            //WEAPONRY
             case "weapon:turn":{ //ship:turn [L|R]
                 if(getPlayer(i).hasControls(Controls.WEAPONS))
                 // todo rotate cannon.
                 break;
             }
+
             case "weapon:fire":{ //ship:fire
                 if(getPlayer(i).hasControls(Controls.WEAPONS))
                 // todo fire cannon.
                 break;
             }
 
-            //ENGINEERING
             case "engineering:add":{ //engineering:add [movement|weapons]
                 if(getPlayer(i).hasControls(Controls.ENGINEERING))
                 // todo
                 break;
             }
+            
             case "engineering:remove":{ //engineering:add [movement|weapons]
                 if(getPlayer(i).hasControls(Controls.ENGINEERING))
                 // todo
@@ -106,9 +108,10 @@ class Player {
     public int id;
     public int controls;
     public ShipActor ship;
-    public Systems system;
-    //public CannonActor cannon;
 
+    public Systems system;
+
+    //public CannonActor cannon;
     public Player(int id) {
         this.id = id;
     }
