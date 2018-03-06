@@ -1,8 +1,6 @@
 package server;
 
-import client.ShipActor;
-import client.SpaceObject;
-import client.Systems;
+import client.*;
 import mayflower.Mayflower;
 import mayflower.World;
 import mayflower.net.Server;
@@ -15,6 +13,7 @@ public class GameServer extends Server {
 
     public Mayflower mayflower;
     public World world;
+    public ShipActor ship;
     public List<Player> players;
     public Ticker ticker;
 
@@ -35,43 +34,55 @@ public class GameServer extends Server {
         switch (cmd) {
             case "start" : {
                 send("start");
-                this.world = new GameWorld();
+                this.ship = new ShipActor();
+                this.world = new GameWorld(ship);
                 mayflower._setWorld(world);
+
+                //if(getPlayer(i).sys.equals("weapon")){world.showText("Weapons System",25,50);}
+                //else if(getPlayer(i).sys.equals("movement")){world.showText("Movement System",25,50);}
+                //else if(getPlayer(i).sys.equals("engineer")){world.showText("Engineer System" , 25, 50);}
+                //send("text: score Score:_0");
+                //send("text: weapon Weapon_Energy:_" + getPlayer(i).weapon.getEnergy());
+                //send("text: movement Movement_Energy:_" + getPlayer(i).movement.getEnergy());
+                //send("text: reserve Reserve_Energy:_" + getPlayer(i).weapon.getReserves());
+                //if(getPlayer(i).sys.equals("weapon")){send(i,"text: system Weapons_System");}
+                //else if(getPlayer(i).sys.equals("movement")){send(i,"text: system Movement_System");}
+                //else if(getPlayer(i).sys.equals("engineer")){send(i,"text: system Engineer_System");}
                 break;
             }
 
             case "ship:speed":{ //ship:speed [+|-]
-                if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeSpeed(split[1].equals("+") ? 1 : -1);
+                if(getPlayer(i).hasControls(Controls.MOVEMENT) && ship != null)
+                    ship.changeSpeed(split[1].equals("+") ? 1 : -1);
                 break;
             }
 
             case "ship:turn":{ //ship:turn [L|R]
-                if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeDirection(split[1].equals("R") ? 4 : -4);
+                if(getPlayer(i).hasControls(Controls.MOVEMENT) && ship != null)
+                    ship.changeDirection(split[1].equals("R") ? 4 : -4);
                 break;
             }
 
             case "weapon:turn":{ //ship:turn [L|R]
-                if(getPlayer(i).hasControls(Controls.WEAPONS))
+                if(getPlayer(i).hasControls(Controls.WEAPONS) && ship != null)
                 // todo rotate cannon.
                 break;
             }
 
             case "weapon:fire":{ //ship:fire
-                if(getPlayer(i).hasControls(Controls.WEAPONS))
+                if(getPlayer(i).hasControls(Controls.WEAPONS) && ship != null)
                 // todo fire cannon.
                 break;
             }
 
             case "engineering:add":{ //engineering:add [movement|weapons]
-                if(getPlayer(i).hasControls(Controls.ENGINEERING))
+                if(getPlayer(i).hasControls(Controls.ENGINEERING) && world != null)
                 // todo
                 break;
             }
 
             case "engineering:remove":{ //engineering:add [movement|weapons]
-                if(getPlayer(i).hasControls(Controls.ENGINEERING))
+                if(getPlayer(i).hasControls(Controls.ENGINEERING) && world != null)
                 // todo
                 break;
             }
@@ -81,7 +92,6 @@ public class GameServer extends Server {
     @Override
     public void onJoin(int i) {
         players.add(new Player(i));
-        getPlayer(i).controls = Controls.ALL;
         System.out.println("Player connected " + i);
     }
 
@@ -107,9 +117,8 @@ public class GameServer extends Server {
         if(world != null) {
             send("clear");
 
-            getObjects(SpaceObject.class).forEach(n -> {
-                send(n.image + " " + n.speed + " " + n.getRotation() + " " + n.getX() + " " + n.getY());
-            });
+            getObjects(SpaceObject.class).forEach(n ->
+                    send("image " + n.image + " " + n.speed + " " + n.getRotation() + " " + n.getX() + " " + n.getY()));
         }
     }
 }
@@ -118,13 +127,26 @@ class Player {
 
     public int id;
     public int controls;
-    public ShipActor ship;
 
-    public Systems system;
+    public String sys;
+    public Systems weapon;
+    public Systems movement;
+    public Systems engineer;
 
-    //public CannonActor cannon;
     public Player(int id) {
+
         this.id = id;
+        this.controls = Controls.ALL;
+
+        ArrayList<String> systemsArrayList = new ArrayList<>();
+        weapon = new WeaponsSystem();
+        movement = new MovementSystem();
+        engineer = new EngineerSystem();
+        systemsArrayList.add("engineer");
+        systemsArrayList.add("movement");
+        systemsArrayList.add("weapon");
+        sys = systemsArrayList.get(id%3);
+
     }
 
     public boolean hasControls(int... control) {

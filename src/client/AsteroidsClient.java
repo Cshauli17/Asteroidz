@@ -40,13 +40,14 @@ public class AsteroidsClient extends Client {
                 wld.getObjects().removeIf(n -> n instanceof PuppetObject);
                 break;
             }
-            case "image:": { //image:[abc] [speed] [rotation] [x] [y]
+            case "image": { //image: [abc] [speed] [rotation] [x] [y]
                 String image = split[1];
                 int speed = parseInt(split[2]);
                 int rotation = parseInt(split[3]);
                 int x = parseInt(split[4]);
                 int y = parseInt(split[5]);
                 wld.addObject(new PuppetObject(image, speed, rotation), x, y);
+                break;
             }
             //ship
             case "ship:": {
@@ -82,6 +83,27 @@ public class AsteroidsClient extends Client {
                 SpaceObject collectable = new PuppetObject("Collectable.png",0, 0);
                 break;
             }
+            //text: [score/weapon/movement/reserve] string
+            case "text:": {
+                String[] split2 = split[2].split("_");
+                if(split[1].toLowerCase().equals("score")){
+                    wld.showText(split2[0] + " " + split2[1], 750, 50);
+                }
+                else if(split[1].toLowerCase().equals("weapon")){
+                    wld.showText(split2[0] + " " + split2[1] + " " + split2[2],18, 25, 650);
+                }
+                else if(split[1].toLowerCase().equals("movement")){
+                    wld.showText(split2[0] + " " + split2[1] + " " + split2[2],18, 25, 675);
+                }
+                else if(split[1].toLowerCase().equals("reserve")){
+                    wld.showText(split2[0] + " " + split2[1] + " " + split2[2],18, 25, 700);
+                }
+                else if(split[1].toLowerCase().equals("system")){
+                    wld.showText(split2[0] + " " + split2[1], 25,50);
+                }
+                break;
+            }
+
         }
     }
 
