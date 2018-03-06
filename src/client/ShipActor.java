@@ -1,8 +1,5 @@
 package client;
 
-import mayflower.Keyboard;
-import mayflower.Mayflower;
-
 public class ShipActor extends SpaceObject {
 
     public ShipActor(String file) {
@@ -11,13 +8,7 @@ public class ShipActor extends SpaceObject {
     }
 
     @Override
-    public void act(){
+    public void act() {
       
     }
-
-    @Override
-    public void tick() {
-        
-    }
-
 }

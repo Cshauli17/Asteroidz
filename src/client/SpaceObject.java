@@ -7,25 +7,26 @@ public abstract class SpaceObject extends TickingActor {
 
     public int speed;
     public int direction;
+    public String image;
 
     public SpaceObject(String file, int intSpeed, int intDirection){
-        MayflowerImage img = new MayflowerImage(file);
-        setImage(img);
+        if(file != null) {
+            MayflowerImage img = new MayflowerImage(file);
+            setImage(img);
+        }
+        image = file;
         speed = intSpeed;
         direction = intDirection;
 
     }
 
-    public void changeSpeed(int change){
+    public void changeSpeed(int change) {
         speed += change;
     }
 
-    public void changeDirection(int change){
+    public void changeDirection(int change) {
         direction += change;
-        setRotation(direction);
     }
-
-    public int getSpeed(){return speed;}
 
     @Override
     public void act(){
@@ -34,7 +35,7 @@ public abstract class SpaceObject extends TickingActor {
 
     @Override
     public void tick() {
-        System.out.println("sup");
-        move(getSpeed());
+        move(speed/2.0);
+        setRotation(direction);
     }
 }

@@ -26,13 +26,27 @@ public class AsteroidsClient extends Client {
     public void process(String s) {
         String[] split = s.split(" ");
         String cmd = split[0].toLowerCase();
-        System.out.println("Processing: " + s);
+
+        if(!cmd.equals("clear"))
+            System.out.println("Processing: " + s);
 
         switch (cmd) {
             case "start": {
                 wld = new LocalGameWorld();
                 Mayflower.setWorld(wld);
                 break;
+            }
+            case "clear": {
+                wld.getObjects().removeIf(n -> n instanceof PuppetObject);
+                break;
+            }
+            case "image:": { //image:[abc] [speed] [rotation] [x] [y]
+                String image = split[1];
+                int speed = parseInt(split[2]);
+                int rotation = parseInt(split[3]);
+                int x = parseInt(split[4]);
+                int y = parseInt(split[5]);
+                wld.addObject(new PuppetObject(image, speed, rotation), x, y);
             }
             //ship
             case "ship:": {

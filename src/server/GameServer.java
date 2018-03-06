@@ -3,18 +3,13 @@ package server;
 import client.ShipActor;
 import client.SpaceObject;
 import client.Systems;
-import mayflower.Keyboard;
 import mayflower.Mayflower;
-import mayflower.MayflowerHeadless;
 import mayflower.World;
 import mayflower.net.Server;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.lang.Integer.parseInt;
 
 public class GameServer extends Server {
 
@@ -36,6 +31,7 @@ public class GameServer extends Server {
         String[] split = s.split(" ");
         String cmd = split[0].toLowerCase();
         System.out.println("Server processing: " + s);
+
         switch (cmd) {
             case "start" : {
                 send("start");
@@ -52,7 +48,7 @@ public class GameServer extends Server {
 
             case "ship:turn":{ //ship:turn [L|R]
                 if(getPlayer(i).hasControls(Controls.MOVEMENT))
-                    getPlayer(i).ship.changeDirection(split[1].equals("L") ? 1 : -1);
+                    getPlayer(i).ship.changeDirection(split[1].equals("R") ? 4 : -4);
                 break;
             }
 
@@ -85,6 +81,7 @@ public class GameServer extends Server {
     @Override
     public void onJoin(int i) {
         players.add(new Player(i));
+        getPlayer(i).controls = Controls.ALL;
         System.out.println("Player connected " + i);
     }
 
@@ -104,6 +101,16 @@ public class GameServer extends Server {
                 .filter(clazz::isInstance)
                 .map(clazz::cast)
                 .collect(Collectors.toList());
+    }
+
+    public void sendClient() {
+        if(world != null) {
+            send("clear");
+
+            getObjects(SpaceObject.class).forEach(n -> {
+                send(n.image + " " + n.speed + " " + n.getRotation() + " " + n.getX() + " " + n.getY());
+            });
+        }
     }
 }
 
