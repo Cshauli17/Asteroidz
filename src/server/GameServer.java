@@ -1,8 +1,6 @@
 package server;
 
-import client.ShipActor;
-import client.SpaceObject;
-import client.Systems;
+import client.*;
 import mayflower.Keyboard;
 import mayflower.Mayflower;
 import mayflower.MayflowerHeadless;
@@ -41,6 +39,16 @@ public class GameServer extends Server {
                 send("start");
                 this.world = new GameWorld();
                 mayflower._setWorld(world);
+                if(getPlayer(i).sys.equals("weapon")){world.showText("Weapons System",25,50);}
+                else if(getPlayer(i).sys.equals("movement")){world.showText("Movement System",25,50);}
+                else if(getPlayer(i).sys.equals("engineer")){world.showText("Engineer System" , 25, 50);}
+                send("text: score Score:_0");
+                send("text: weapon Weapon_Energy:_" + getPlayer(i).weapon.getEnergy());
+                send("text: movement Movement_Energy:_" + getPlayer(i).movement.getEnergy());
+                send("text: reserve Reserve_Energy:_" + getPlayer(i).weapon.getReserves());
+                if(getPlayer(i).sys.equals("weapon")){send(i,"text: system Weapons_System");}
+                else if(getPlayer(i).sys.equals("movement")){send(i,"text: system Movement_System");}
+                else if(getPlayer(i).sys.equals("engineer")){send(i,"text: system Engineer_System");}
                 break;
             }
 
@@ -113,11 +121,22 @@ class Player {
     public int controls;
     public ShipActor ship;
 
-    public Systems system;
-
+    public String sys;
+    public Systems weapon;
+    public Systems movement;
+    public Systems engineer;
     //public CannonActor cannon;
     public Player(int id) {
         this.id = id;
+        ArrayList<String> systemsArrayList = new ArrayList<>();
+        weapon = new WeaponsSystem();
+        movement = new MovementSystem();
+        engineer = new EngineerSystem();
+        systemsArrayList.add("engineer");
+        systemsArrayList.add("movement");
+        systemsArrayList.add("weapon");
+        sys = systemsArrayList.get(id%3);
+
     }
 
     public boolean hasControls(int... control) {

@@ -4,8 +4,12 @@ public class WeaponsSystem extends Systems{
     public static int wenergy;
     public WeaponsSystem(){
         super();
-        wenergy = 1;
+        wenergy = 2;
 
     }
 
+
+    public int getEnergy() {
+        return wenergy;
+    }
 }

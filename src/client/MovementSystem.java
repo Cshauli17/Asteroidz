@@ -5,7 +5,11 @@ public class MovementSystem extends Systems {
 
     public MovementSystem(){
         super();
-        menergy = 1;
+        menergy = 2;
     }
+    public int getEnergy(){
+        return menergy;
+    }
+
 
 }

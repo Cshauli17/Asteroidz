@@ -7,7 +7,7 @@ public class Systems extends Actor{
     private int energy;
     private int reserves;
     public Systems(){
-
+        reserves = 1;
     }
 
     public void addEnergy(){
@@ -17,7 +17,12 @@ public class Systems extends Actor{
         }
 
     }
-
+    public int getEnergy(){
+        return energy;
+    }
+    public int getReserves(){
+        return reserves;
+    }
     public void removeEnergy(){
         if(energy > 0){
             energy--;
@@ -27,7 +32,8 @@ public class Systems extends Actor{
     }
 
     public void act(){
-        systemsEnergy = EngineerSystem.eenergy + MovementSystem.menergy + WeaponsSystem.wenergy;
+        systemsEnergy = MovementSystem.menergy + WeaponsSystem.wenergy;
+        reserves = 5 - systemsEnergy;
     }
 
 

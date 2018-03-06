@@ -3,11 +3,13 @@ package client;
 import mayflower.Keyboard;
 import mayflower.Mayflower;
 import mayflower.World;
+import server.GameServer;
 
 public class LocalGameWorld extends World {
 
     public LocalGameWorld() {
         setBackground("rsrc/finals/field.png");
+
 
     }
 
