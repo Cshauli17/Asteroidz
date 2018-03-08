@@ -52,6 +52,8 @@ public class Ticker {
             });
         }
 
-        AsteroidsServer.gameServer.sendClient();
+        for(Player p : AsteroidsServer.gameServer.players) {
+            AsteroidsServer.gameServer.sendClient(p);
+        }
     }
 }

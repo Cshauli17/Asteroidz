@@ -6,6 +6,7 @@ import mayflower.World;
 import mayflower.net.Server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ public class GameServer extends Server {
     public Mayflower mayflower;
     public World world;
     public ShipActor ship;
+    public HashMap<Integer, Integer> controls;
     public List<Player> players;
     public Ticker ticker;
 
@@ -23,6 +25,11 @@ public class GameServer extends Server {
         this.ticker = new Ticker();
         this.mayflower = mayflower;
         this.players = new ArrayList<>();
+        this.controls = new HashMap<>();
+
+        controls.put(Controls.MOVEMENT, 2);
+        controls.put(Controls.WEAPONS, 2);
+        controls.put(Controls.ENGINEERING, 1);
     }
 
     @Override
@@ -37,53 +44,94 @@ public class GameServer extends Server {
                 this.ship = new ShipActor();
                 this.world = new GameWorld(ship);
                 mayflower._setWorld(world);
-
-                //if(getPlayer(i).sys.equals("weapon")){world.showText("Weapons System",25,50);}
-                //else if(getPlayer(i).sys.equals("movement")){world.showText("Movement System",25,50);}
-                //else if(getPlayer(i).sys.equals("engineer")){world.showText("Engineer System" , 25, 50);}
-                //send("text: score Score:_0");
-                //send("text: weapon Weapon_Energy:_" + getPlayer(i).weapon.getEnergy());
-                //send("text: movement Movement_Energy:_" + getPlayer(i).movement.getEnergy());
-                //send("text: reserve Reserve_Energy:_" + getPlayer(i).weapon.getReserves());
-                //if(getPlayer(i).sys.equals("weapon")){send(i,"text: system Weapons_System");}
-                //else if(getPlayer(i).sys.equals("movement")){send(i,"text: system Movement_System");}
-                //else if(getPlayer(i).sys.equals("engineer")){send(i,"text: system Engineer_System");}
                 break;
             }
 
             case "ship:speed":{ //ship:speed [+|-]
-                if(getPlayer(i).hasControls(Controls.MOVEMENT) && ship != null)
-                    ship.changeSpeed(split[1].equals("+") ? 1 : -1);
+                if(getPlayer(i).hasControls(Controls.MOVEMENT) && ship != null) {
+                    int j = controls.get(Controls.MOVEMENT);
+                    ship.changeSpeed(split[1].equals("+") ? j : -j);
+                }
                 break;
             }
 
             case "ship:turn":{ //ship:turn [L|R]
-                if(getPlayer(i).hasControls(Controls.MOVEMENT) && ship != null)
+                if(getPlayer(i).hasControls(Controls.MOVEMENT) && ship != null) {
                     ship.changeDirection(split[1].equals("R") ? 4 : -4);
+                }
                 break;
             }
 
-            case "weapon:turn":{ //ship:turn [L|R]
-                if(getPlayer(i).hasControls(Controls.WEAPONS) && ship != null)
-                // todo rotate cannon.
-                break;
-            }
-
-            case "weapon:fire":{ //ship:fire
-                if(getPlayer(i).hasControls(Controls.WEAPONS) && ship != null)
-                // todo fire cannon.
+            case "weapon:fire":{ //weapon:fire [x] [y]
+                if(getPlayer(i).hasControls(Controls.WEAPONS) && ship != null
+                        && controls.get(Controls.WEAPONS) > 0) {
+                    int x = Integer.parseInt(split[1]);
+                    int y = Integer.parseInt(split[2]);
+                    Projectile proj = new Projectile(controls.get(Controls.WEAPONS) * 10, x, y);
+                    world.addObject(proj, ship.getCenterX(), ship.getCenterY());
+                }
+                // todo fire cannon. power alters projectile speed. xy is target location
                 break;
             }
 
             case "engineering:add":{ //engineering:add [movement|weapons]
-                if(getPlayer(i).hasControls(Controls.ENGINEERING) && world != null)
-                // todo
+                if(getPlayer(i).hasControls(Controls.ENGINEERING) && world != null
+                        && controls.get(Controls.ENGINEERING) > 0) {
+                    switch(split[1]) {
+                        case "movement": {
+                            controls.put(Controls.MOVEMENT, controls.get(Controls.MOVEMENT) + 1);
+                            controls.put(Controls.ENGINEERING, controls.get(Controls.ENGINEERING) - 1);
+                            break;
+                        }
+                        case "weapons": {
+                            controls.put(Controls.WEAPONS, controls.get(Controls.WEAPONS) + 1);
+                            controls.put(Controls.ENGINEERING, controls.get(Controls.ENGINEERING) - 1);
+                            break;
+                        }
+                    }
+                }
                 break;
             }
 
-            case "engineering:remove":{ //engineering:add [movement|weapons]
-                if(getPlayer(i).hasControls(Controls.ENGINEERING) && world != null)
-                // todo
+            case "engineering:remove":{ //engineering:remove [movement|weapons]
+                if(getPlayer(i).hasControls(Controls.ENGINEERING) && world != null) {
+                    switch(split[1]) {
+                        case "movement": {
+                            if(controls.get(Controls.MOVEMENT) > 0) {
+                                controls.put(Controls.MOVEMENT, controls.get(Controls.MOVEMENT) - 1);
+                                controls.put(Controls.ENGINEERING, controls.get(Controls.ENGINEERING) + 1);
+                            }
+                            break;
+                        }
+                        case "weapons": {
+                            if(controls.get(Controls.WEAPONS) > 0) {
+                                controls.put(Controls.WEAPONS, controls.get(Controls.WEAPONS) - 1);
+                                controls.put(Controls.ENGINEERING, controls.get(Controls.ENGINEERING) + 1);
+                            }
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+
+            case "system:toggle":{ //system:toggle [movement|weapons|engineering]
+                if(world != null) {
+                    switch(split[1]) {
+                        case "movement" : {
+                            getPlayer(i).controls += getPlayer(i).hasControls(Controls.MOVEMENT) ? -1 : 1;
+                            break;
+                        }
+                        case "weapons" : {
+                            getPlayer(i).controls += getPlayer(i).hasControls(Controls.WEAPONS) ? -2 : 2;
+                            break;
+                        }
+                        case "engineering" : {
+                            getPlayer(i).controls += getPlayer(i).hasControls(Controls.ENGINEERING) ? -4 : 4;
+                            break;
+                        }
+                    }
+                }
                 break;
             }
         }
@@ -113,12 +161,32 @@ public class GameServer extends Server {
                 .collect(Collectors.toList());
     }
 
-    public void sendClient() {
+    public void sendClient(Player p) {
         if(world != null) {
             getObjects(SpaceObject.class).forEach(n -> {
-                send("image " + n.image + " " + n.uuid + " " + n.getRotation() + " " + n.getX() + " " + n.getY());
+                send(p.id, "image " + n.image + " " + n.uuid + " " + n.getRotation() + " " + n.getX() + " " + n.getY() + " " + n.getImage().getTransparency());
             });
+
+            StringBuilder texts = new StringBuilder();
+            texts.append("text ");
+            texts.append(getText("Score: " + p.score, 32, 750, 50));
+            texts.append(getText("Movement - " + controls.get(Controls.MOVEMENT), 18, 25, 650));
+            texts.append(getText("Weapon - " + controls.get(Controls.WEAPONS), 18, 25, 675));
+            texts.append(getText("Reserves - " + controls.get(Controls.ENGINEERING), 18, 25, 700));
+
+            if(p.hasControls(Controls.MOVEMENT))
+                texts.append(getText("Movement (WASD)", 14, 25, 25));
+            if(p.hasControls(Controls.WEAPONS))
+                texts.append(getText("Weapons (Mouse)", 14, 25, 50));
+            if(p.hasControls(Controls.ENGINEERING))
+                texts.append(getText("Engineering (RFTG)", 14, 25, 75));
+
+            send(p.id, texts.toString().trim());
         }
+    }
+
+    private String getText(String text, int size, int x, int y) {
+        return x + "|" + y + "|" + size + "|" + text.replace(" ", "_") + " ";
     }
 }
 
@@ -126,26 +194,10 @@ class Player {
 
     public int id;
     public int controls;
-
-    public String sys;
-    public Systems weapon;
-    public Systems movement;
-    public Systems engineer;
+    public int score;
 
     public Player(int id) {
-
         this.id = id;
-        this.controls = Controls.ALL;
-
-        ArrayList<String> systemsArrayList = new ArrayList<>();
-        weapon = new WeaponsSystem();
-        movement = new MovementSystem();
-        engineer = new EngineerSystem();
-        systemsArrayList.add("engineer");
-        systemsArrayList.add("movement");
-        systemsArrayList.add("weapon");
-        sys = systemsArrayList.get(id%3);
-
     }
 
     public boolean hasControls(int... control) {
