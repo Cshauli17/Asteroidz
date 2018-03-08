@@ -4,6 +4,8 @@ import mayflower.Mayflower;
 import mayflower.World;
 import mayflower.net.Client;
 
+import java.util.UUID;
+
 import static java.lang.Integer.parseInt;
 
 public class AsteroidsClient extends Client {
@@ -36,51 +38,28 @@ public class AsteroidsClient extends Client {
                 Mayflower.setWorld(wld);
                 break;
             }
-            case "clear": {
-                wld.getObjects().removeIf(n -> n instanceof PuppetObject);
+            case "remove": { //remove [uuid]
+                UUID uuid = UUID.fromString(split[1]);
+                wld.getObjects().removeIf(n -> n instanceof PuppetActor && ((PuppetActor) n).uuid.equals(uuid));
                 break;
             }
-            case "image": { //image: [abc] [speed] [rotation] [x] [y]
+            case "image": { //image [abc] [uuid] [rotation] [x] [y]
                 String image = split[1];
-                int speed = parseInt(split[2]);
+                UUID uuid = UUID.fromString(split[2]);
                 int rotation = parseInt(split[3]);
                 int x = parseInt(split[4]);
                 int y = parseInt(split[5]);
-                wld.addObject(new PuppetObject(image, speed, rotation), x, y);
-                break;
-            }
-            //ship
-            case "ship:": {
-                int x = parseInt(split[1]);
-                int y = parseInt(split[2]);
-                int rotation = parseInt(split[3]);
-                int velocity = parseInt(split[4]);
-                SpaceObject ship = new PuppetObject("rsrc/brady_old.png", velocity, rotation);
-                wld.addObject(ship,x,y);
 
-                break;
-            }
-            //asteroid: size x y rotation velocity
-            case "asteroid:": {
-                String size = split[1].toLowerCase();
-                int x = parseInt(split[2]);
-                int y = parseInt(split[3]);
-                int rotation = parseInt(split[4]);
-                int velocity = parseInt(split[5]);
-                if(size.equals("small")){
-                    SpaceObject asteroid = new PuppetObject("SmallAsteroid.png", velocity, rotation);
-                }
-                else if(size.equals("large")){
-                    SpaceObject asteroid = new PuppetObject("LargeAsteroid.png", velocity, rotation);
+                PuppetActor actor = wld.getObjects(PuppetActor.class).stream().filter(n -> n.uuid.equals(uuid)).findFirst().orElse(null);
+
+                //Create a new actor for this uuid if one doesnt exist
+                if(actor == null) {
+                    wld.addObject(new PuppetActor(uuid, image, rotation, x, y), x, y);
+                } else { //Otherwise, update the existing
+                    actor.setRotation(rotation);
+                    actor.setLocation(x, y);
                 }
 
-                break;
-            }
-            //collectable: x y
-            case "collectable:": {
-                int x = parseInt(split[1]);
-                int y = parseInt(split[2]);
-                SpaceObject collectable = new PuppetObject("Collectable.png",0, 0);
                 break;
             }
             //text: [score/weapon/movement/reserve] string

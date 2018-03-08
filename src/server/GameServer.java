@@ -115,10 +115,9 @@ public class GameServer extends Server {
 
     public void sendClient() {
         if(world != null) {
-            send("clear");
-
-            getObjects(SpaceObject.class).forEach(n ->
-                    send("image " + n.image + " " + n.speed + " " + n.getRotation() + " " + n.getX() + " " + n.getY()));
+            getObjects(SpaceObject.class).forEach(n -> {
+                send("image " + n.image + " " + n.uuid + " " + n.getRotation() + " " + n.getX() + " " + n.getY());
+            });
         }
     }
 }

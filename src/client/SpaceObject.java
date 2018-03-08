@@ -3,21 +3,25 @@ package client;
 import mayflower.MayflowerImage;
 import server.TickingActor;
 
-public abstract class SpaceObject extends TickingActor {
+import java.util.UUID;
+
+public class SpaceObject extends TickingActor {
 
     public int speed;
-    public int direction;
     public String image;
+    public UUID uuid;
 
-    public SpaceObject(String file, int intSpeed, int intDirection){
+    public SpaceObject(String file, int speed, int rotation){
         if(file != null) {
             MayflowerImage img = new MayflowerImage(file);
             setImage(img);
         }
-        image = file;
-        speed = intSpeed;
-        direction = intDirection;
 
+        image = file;
+        this.speed = speed;
+        this.uuid = UUID.randomUUID();
+        
+        setRotation(rotation);
     }
 
     public void changeSpeed(int change) {
@@ -25,17 +29,17 @@ public abstract class SpaceObject extends TickingActor {
     }
 
     public void changeDirection(int change) {
-        direction += change;
+        setRotation(getRotation() + change);
     }
 
     @Override
-    public void act(){
+    public void act() {
 
     }
 
     @Override
     public void tick() {
         move(speed/2.0);
-        setRotation(direction);
     }
 }
+
