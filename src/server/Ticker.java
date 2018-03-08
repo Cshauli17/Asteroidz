@@ -57,7 +57,7 @@ public class Ticker {
             AsteroidsServer.gameServer.sendClient(p);
         }
 
-        if(tick % 100 == 0) {
+        if(tick % 60 == 0) {
             AsteroidsServer.gameServer.periodicTask();
         }
 

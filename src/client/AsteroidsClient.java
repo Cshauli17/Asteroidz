@@ -44,6 +44,11 @@ public class AsteroidsClient extends Client {
                 Mayflower.setWorld(wld);
                 break;
             }
+            case "end": {
+                wld.setBackground("rsrc/finals/sadbrady.jpg");
+                disconnect();
+                break;
+            }
             case "remove": { //remove [uuid]
                 UUID uuid = UUID.fromString(split[1]);
                 wld.getObjects().removeIf(n -> n instanceof PuppetActor && ((PuppetActor) n).uuid.equals(uuid));

@@ -1,5 +1,7 @@
 package client;
 
+import server.AsteroidsServer;
+
 public class Asteroid extends SpaceObject {
 
     public boolean large;
@@ -20,5 +22,17 @@ public class Asteroid extends SpaceObject {
                 getWorld().addObject(new Asteroid(speed, getRotation(), false), getCenterX(), getCenterY() + 100);
         }
         super.destroy();
+    }
+
+    @Override
+    public void act() {
+        super.act();
+
+        ShipActor other = getOneIntersectingObject(ShipActor.class);
+
+        if(other != null) {
+            this.destroy();
+            AsteroidsServer.gameServer.send("end");
+        }
     }
 }

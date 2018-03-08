@@ -12,11 +12,12 @@ public abstract class TimeLimitedSpaceObject extends SpaceObject {
     public void tick() {
         super.tick();
 
-        this.getImage().setTransparency(lifespan);
-        if(lifespan >= 250)
+        if(lifespan == 100 && isAtEdge()) {
             this.destroy();
+        }
 
         lifespan++;
+        if(lifespan > 100) lifespan = 100;
     }
 
     boolean isFirstTick() {

@@ -1,8 +1,8 @@
 package server;
 
-import mayflower.Mayflower;
+import mayflower.MayflowerHeadless;
 
-public class AsteroidsServer extends Mayflower {
+public class AsteroidsServer extends MayflowerHeadless {
 
     public static GameServer gameServer;
 

@@ -221,14 +221,14 @@ public class GameServer extends Server {
 
 class Player {
 
-    public int id;
-    public int controls;
+    int id;
+    int controls;
 
-    public Player(int id) {
+    Player(int id) {
         this.id = id;
     }
 
-    public boolean hasControls(int... control) {
+    boolean hasControls(int... control) {
         for (int i = 0; i < control.length; i++) {
             if((controls & control[i]) != control[i])
                 return false;
@@ -239,9 +239,9 @@ class Player {
 
 class Controls {
 
-    public static final int MOVEMENT    = 1; //001
-    public static final int WEAPONS     = 2; //010
-    public static final int ENGINEERING = 4; //100
+    static final int MOVEMENT    = 1; //001
+    static final int WEAPONS     = 2; //010
+    static final int ENGINEERING = 4; //100
 
-    public static final int ALL         = 7; //111
+    static final int ALL         = 7; //111
 }

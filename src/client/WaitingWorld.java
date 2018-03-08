@@ -12,3 +12,4 @@ public class WaitingWorld extends World {
     public void act() {
     }
 }
+
