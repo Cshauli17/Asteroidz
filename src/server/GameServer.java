@@ -8,6 +8,7 @@ import mayflower.net.Server;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GameServer extends Server {
@@ -18,6 +19,7 @@ public class GameServer extends Server {
     public HashMap<Integer, Integer> controls;
     public List<Player> players;
     public Ticker ticker;
+    public int score;
 
     public GameServer(Mayflower mayflower) {
         super(21500); //SpaceX is worth 21.5bn
@@ -169,7 +171,7 @@ public class GameServer extends Server {
 
             StringBuilder texts = new StringBuilder();
             texts.append("text ");
-            texts.append(getText("Score: " + p.score, 32, 750, 50));
+            texts.append(getText("Score: " + score, 32, 750, 50));
             texts.append(getText("Movement - " + controls.get(Controls.MOVEMENT), 18, 25, 650));
             texts.append(getText("Weapon - " + controls.get(Controls.WEAPONS), 18, 25, 675));
             texts.append(getText("Reserves - " + controls.get(Controls.ENGINEERING), 18, 25, 700));
@@ -188,13 +190,39 @@ public class GameServer extends Server {
     private String getText(String text, int size, int x, int y) {
         return x + "|" + y + "|" + size + "|" + text.replace(" ", "_") + " ";
     }
+
+    //Do something interesting. Spawn an asteroid, a collectible, anything, really.
+    public void periodicTask() {
+        if(world == null) return;
+
+        Random event = new Random();
+        int x, y;
+        int speed = event.nextInt(15) + 15;
+        int rotation = event.nextInt(360);
+
+        if(event.nextBoolean()) {
+            x = event.nextInt(Mayflower.getWidth());
+            y = event.nextBoolean() ? Mayflower.getHeight() + 50 : -50;
+        } else {
+            x = event.nextBoolean() ? Mayflower.getWidth() + 50 : -50;
+            y = event.nextInt(Mayflower.getHeight());
+        }
+
+        //Spawn either an asteroid or a ring
+        if(event.nextBoolean()) {
+            world.addObject(new Asteroid(speed, rotation, event.nextBoolean()), x, y);
+            System.out.println("New asteroid " + x + " " + y);
+        } else {
+            world.addObject(new Collectible(speed, rotation), x, y);
+            System.out.println("New ring " + x + " " + y);
+        }
+    }
 }
 
 class Player {
 
     public int id;
     public int controls;
-    public int score;
 
     public Player(int id) {
         this.id = id;

@@ -3,7 +3,6 @@ package client;
 import mayflower.Mayflower;
 import mayflower.World;
 import server.AsteroidsServer;
-import server.GameWorld;
 
 public class LobbyWorld extends World {
 
@@ -21,3 +20,4 @@ public class LobbyWorld extends World {
         }
     }
 }
+

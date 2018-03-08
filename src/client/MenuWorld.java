@@ -34,6 +34,7 @@ public class MenuWorld extends World implements EventListener {
                 String ip = Mayflower.ask("Enter a server IP to join.");
                 if(ip == null) return;
                 Main.client = new AsteroidsClient(ip);
+                Mayflower.setWorld(new WaitingWorld());
             }
         }
     }

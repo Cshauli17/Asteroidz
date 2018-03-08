@@ -8,6 +8,7 @@ public class Ticker {
 
     private Timer t;
     private long time0, time1;
+    private int tick;
 
     public Ticker() {
 
@@ -55,5 +56,11 @@ public class Ticker {
         for(Player p : AsteroidsServer.gameServer.players) {
             AsteroidsServer.gameServer.sendClient(p);
         }
+
+        if(tick % 100 == 0) {
+            AsteroidsServer.gameServer.periodicTask();
+        }
+
+        tick++;
     }
 }
