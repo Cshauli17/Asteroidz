@@ -31,7 +31,6 @@ public class Asteroid extends SpaceObject {
         ShipActor other = getOneIntersectingObject(ShipActor.class);
 
         if(other != null) {
-            this.destroy();
             AsteroidsServer.gameServer.send("end");
         }
     }
